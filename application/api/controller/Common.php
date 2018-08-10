@@ -25,7 +25,7 @@ class Common extends Controller
             ]
         ],
         'Code' => [
-            'getCode' => [
+            'getcode' => [
                 'username' => 'require',
                 'is_exist' => 'require|number|length:1',
             ]
@@ -101,7 +101,9 @@ class Common extends Controller
     public function checkParams($arr)
     {
         //获取验证规则
+//        halt($this->request->controller().$this->request->action());
         $rule = $this->rules[$this->request->controller()][$this->request->action()];
+
         //验证参数并返回错误
         $this->validater = new Validate($rule);
         if (!$this->validater->check($arr)){
@@ -120,7 +122,7 @@ class Common extends Controller
     {
         //采用相加的方式来判定是否合乎规则
         $is_email = Validate::is($username, 'email') ? 1 : 0;
-        $is_phone = preg_match('/*1[34578]\d{9}$/', $username) ? 4 : 2;
+        $is_phone = preg_match('/^1[34578]\d{9}$/', $username) ? 4 : 2;
         $flag     = $is_email + $is_phone;
 
         switch ($flag)
@@ -139,4 +141,37 @@ class Common extends Controller
                 break;
         }
     }
+
+    public function checkExist($value, $type, $exist)
+    {
+        //判断手机还是邮箱
+        $type_num = $type == 'phone' ? 2 : 4;
+        $flag = $type_num + $exist;
+        $phone_res = db('user')->where('user_phone', $value)->find();
+        $email_res = db('user')->where('user_email', $value)->find();
+        switch ($flag)
+        {
+            case 2:
+                if ($phone_res){
+                    $this->returnMsg(400, '此手机号已被占用');
+                }
+                break;
+            case 3:
+                if ($phone_res){
+                    $this->returnMsg(400, '此手机号不存在');
+                }
+                break;
+            case 4:
+                if ($email_res){
+                    $this->returnMsg(400, '此邮箱已被占用');
+                }
+                break;
+            case 5:
+                if ($email_res){
+                    $this->returnMsg(400, '此邮箱不存在');
+                }
+                break;
+        }
+    }
+
 }

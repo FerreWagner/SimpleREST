@@ -13,8 +13,8 @@ class Code extends Common
 {
     public function getCode()
     {
-        $username = $this->params['username'];
-        $exist    = $this->params['is_exist'];
+        $username      = $this->params['username'];
+        $exist         = $this->params['is_exist'];
         $username_type = $this->checkUsername($username);
         switch ($username_type)
         {
@@ -25,7 +25,6 @@ class Code extends Common
                 $this->getCodeByUsername($username, 'email', $exist);
                 break;
         }
-        echo 'code';
     }
 
     /**
@@ -63,9 +62,26 @@ class Code extends Common
         }
     }
 
-    public function getCodeByEmail()
+    /**
+     * 生成验证码
+     * @param $num
+     * @return int
+     */
+    public function makeCode($num)
     {
+        $max = pow(10, $num) - 1;
+        $min = pow(10, $num - 1);
+        return rand($min, $max);
+    }
 
+    public function sendCodeToPhone()
+    {
+        echo 'send phone';
+    }
+
+    public function sendCodeToEmail()
+    {
+        echo 'send email';
     }
 
 }
