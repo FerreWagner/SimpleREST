@@ -9,13 +9,28 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-return [
-    '__pattern__' => [
-        'name' => '\w+',
-    ],
-    '[hello]'     => [
-        ':id'   => ['index/hello', ['method' => 'get'], ['id' => '\d+']],
-        ':name' => ['index/hello', ['method' => 'post']],
-    ],
+//return [
+//    '__pattern__' => [
+//        'name' => '\w+',
+//    ],
+//    '[hello]'     => [
+//        ':id'   => ['index/hello', ['method' => 'get'], ['id' => '\d+']],
+//        ':name' => ['index/hello', ['method' => 'post']],
+//    ],
+//
+//];
 
-];
+use think\Route;
+
+// api.rest.com => rest.com/index.php/api
+Route::domain('api', 'api');//前apu代表api.rest.com后则代表后的
+
+//api.rest.com/user/2 => www.rest.com/index.php/api/user/index/id/2
+//Route::rule('user/:id', 'user/index');
+//Route::rule('user/login', 'user/login');
+
+//登录
+Route::post('user', 'user/login');
+//获取验证码
+Route::get('code/:time/:token/:username/:is_exist', 'code/getCode');
+
