@@ -21,7 +21,13 @@ class Common extends Controller
         'User' => [
             'login' => [
                 'user_name' => ['require', 'chsDash', 'max' => 20],
-                'user_pwd'  => 'require|length:32'
+                'user_pwd'  => 'require|length:32',
+            ]
+        ],
+        'Code' => [
+            'getCode' => [
+                'username' => 'require',
+                'is_exist' => 'require|number|length:1',
             ]
         ]
     ];
@@ -95,10 +101,7 @@ class Common extends Controller
     public function checkParams($arr)
     {
         //获取验证规则
-//        halt($this->request->action());
         $rule = $this->rules[$this->request->controller()][$this->request->action()];
-
-//        halt($this->request->controller());
         //验证参数并返回错误
         $this->validater = new Validate($rule);
         if (!$this->validater->check($arr)){
@@ -106,5 +109,34 @@ class Common extends Controller
         }
         //通过验证
         return $arr;
+    }
+
+    /**
+     * 检测用户名并返回用户名类别
+     * @param $username
+     * @return string
+     */
+    public function checkUsername($username)
+    {
+        //采用相加的方式来判定是否合乎规则
+        $is_email = Validate::is($username, 'email') ? 1 : 0;
+        $is_phone = preg_match('/*1[34578]\d{9}$/', $username) ? 4 : 2;
+        $flag     = $is_email + $is_phone;
+
+        switch ($flag)
+        {
+            case 2:
+                //not phone not email
+                $this->returnMsg(400, '邮箱或手机号不正确');
+                break;
+            case 3:
+                //is email not phone
+                return 'email';
+                break;
+            case 4:
+                //is phone not email
+                return 'phone';
+                break;
+        }
     }
 }
