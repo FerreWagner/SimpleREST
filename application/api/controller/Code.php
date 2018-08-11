@@ -9,6 +9,9 @@
 namespace app\api\controller;
 
 
+use PHPMailer\PHPMailer\PHPMailer;
+//use lib\submail\MESSAGEXsend;
+
 class Code extends Common
 {
     public function getCode()
@@ -74,14 +77,108 @@ class Code extends Common
         return rand($min, $max);
     }
 
-    public function sendCodeToPhone()
+    /**
+     * 向手机发送验证码
+     * @param $phone 手机号
+     * @param $code 生成的验证码
+     */
+    public function sendCodeToPhone($phone, $code)
     {
-        echo 'send phone';
-    }
+        $curl = curl_init();
+//        curl_setopt($curl, CURLOPT_URL, 'https://api.mysubmail.com/message/send');
+        curl_setopt($curl, CURLOPT_URL, 'https://api.mysubmail.com/message/xsend');
 
-    public function sendCodeToEmail()
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        $data = [
+            'appid'     => '',
+            'to'        => $phone,
+            'project'   => '',  //项目id
+            'vars'      => '{"code":'.$code.',"time":"60"}',
+            'signature' => '',  //appkey
+        ];
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        $res = curl_exec($curl);
+        curl_close($curl);
+
+        $res = json_decode($res);
+        if ($res->status !== 'success'){    //当错误时该短信api的status会返回的status为error，所以当不等于success时即判断
+            $this->returnMsg(400, $res->msg);
+        }else{
+            $this->returnMsg(200, '手机验证码已发送,每天发送5次，请在一分钟内验证');
+        }
+
+        dump($res->status);die;
+    }
+//    public function sendCodeToPhone($phone, $code)
+//    {
+//        $submail = new MESSAGEXsend();
+//
+//        $submail->SetTo($phone);
+//        $submail->SetProject('6AI9I3');
+//        $submail->AddVar('code', $code);
+//        $submail->AddVar('time', 60);
+//        $xsend = $submail->xsend();
+//        if ($xsend['status'] !== 'success'){
+//            $this->returnMsg(400, $xsend['msg']);
+//        }else{
+//            $this->returnMsg(200, '手机验证码已发送,每天发送5次，请在一分钟内验证');
+//        }
+//    }
+
+    /**
+     * 向邮箱发送验证码
+     * @param $email
+     * @param $code
+     */
+    public function sendCodeToEmail($email, $code)
     {
-        echo 'send email';
+        $toemail = $email;
+        $mail = new PHPMailer();
+        $mail->isSMTP();
+        $mail->CharSet = 'utf-8';
+        $mail->setLanguage('zh_cn');
+        $mail->Host = 'smtp.163.com';
+        $mail->SMTPAuth = true;
+
+
+        $mail->Username = '18408229270@163.com';
+        $mail->Password = 'WZW19953000';
+        $mail->isHTML(true);
+
+        $mail->SMTPSecure = 'ssl';
+        $mail->Port = 465; //994
+        $mail->setFrom('18408229270@163.com', '接口测试');
+        $mail->addAddress($toemail, 'test');
+        $mail->addReplyTo('18408229270@163.com', 'ReplyFerre');
+        $mail->Subject = "你有新的验证码";
+        $mail->Body = "这是一个测试邮件$code,哈哈哈哈哈";
+        if (!$mail->send()){
+            $this->returnMsg(400, $mail->ErrorInfo);
+        }else{
+            $this->returnMsg(200, '验证码已发送成功，请注意查收');
+        }
+
+//        $mail=new PHPMailer;
+//        $mail->isSMTP();
+//        $mail->Host="smtp.163.com";//发件人使用的smtp服务地址
+//        $mail->SMTPAuth=true;
+//        $mail->Username="18408229270@163.com";//发件人邮箱地址
+//        $mail->Password="WZW19953000";//发件人密码
+//
+//        $mail->setFrom("18408229270@163.com","aaaaaa");
+//        $mail->addAddress("1573646491@qq.com","bbbbbb");//收件人地址和姓名
+//
+//        $mail->Subject="PHPMailer测试";//标题
+//        $mail->Body="PHPMailer是一个用来发送电子邮件的函数包，这是使用它发送邮件的一个demo";//正文
+//
+//        if(!$mail->send()){
+//            echo "send failed!";
+//            echo "error:".$mail->ErrorInfo;
+//        }else {
+//            echo "send success!";
+//        }
     }
 
 }
