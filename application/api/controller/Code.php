@@ -144,7 +144,7 @@ class Code extends Common
 
 
         $mail->Username = '18408229270@163.com';
-        $mail->Password = 'WZW19953000';
+        $mail->Password = '';
         $mail->isHTML(true);
 
         $mail->SMTPSecure = 'ssl';
