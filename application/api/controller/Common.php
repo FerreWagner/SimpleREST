@@ -20,7 +20,7 @@ class Common extends Controller
     protected $rules = [
         'User' => [
             'login' => [
-                'user_name' => ['require', 'chsDash', 'max' => 20],
+                'user_name' => ['require'],
                 'user_pwd'  => 'require|length:32',
             ],
             'register' => [
@@ -162,7 +162,7 @@ class Common extends Controller
                 }
                 break;
             case 3:
-                if ($phone_res){
+                if (!$phone_res){
                     $this->returnMsg(400, '此手机号不存在');
                 }
                 break;
@@ -172,7 +172,7 @@ class Common extends Controller
                 }
                 break;
             case 5:
-                if ($email_res){
+                if (!$email_res){
                     $this->returnMsg(400, '此邮箱不存在');
                 }
                 break;
@@ -188,7 +188,7 @@ class Common extends Controller
     {
         //验证码超时，1分钟内有效
         $last_time = session($user_name.'_last_send_time');
-        
+
         if (time() - $last_time > 60){
             $this->returnMsg(400, '验证超时，请在1分钟内验证');
         }

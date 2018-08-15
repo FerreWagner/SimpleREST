@@ -14,11 +14,39 @@ class User extends Common
 
     public function login()
     {
+        //接收参数
         $data = $this->params;
-        dump($data);
-        echo 'welcome!';
+        //检测用户名
+        $user_name_type = $this->checkUsername($data['user_name']);
+        switch ($user_name_type)
+        {
+            case 'phone':
+                $this->checkExist($data['user_name'], 'phone', 1);
+                $db_res = db('user')
+                    ->field('user_id, user_name, user_phone, user_email, user_rtime, user_pwd')
+                    ->where('user_phone', $data['user_name'])
+                    ->find();
+                break;
+            case 'email':
+                $this->checkExist($data['user_name'], 'email', 1);
+                $db_res = db('user')
+                    ->field('user_id, user_name, user_phone, user_email, user_rtime, user_pwd')
+                    ->where('user_email', $data['user_name'])
+                    ->find();
+                break;
+        }
+        if ($db_res['user_pwd'] !== $data['user_pwd']){
+            $this->returnMsg(400, '用户名或密码不正确');
+        }else{
+            unset($db_res['user_pwd']); //密码永不返回
+            $this->returnMsg(200, '登陆成功', $db_res);
+        }
+
     }
 
+    /**
+     * 用户注册
+     */
     public function register()
     {
         $data = $this->params;
