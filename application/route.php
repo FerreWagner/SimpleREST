@@ -33,4 +33,6 @@ Route::domain('api', 'api');//前apu代表api.rest.com后则代表后的
 Route::post('user', 'user/login');
 //获取验证码
 Route::get('code/:time/:token/:username/:is_exist', 'code/getcode');
+//用户注册
+Route::post('user/register', 'user/register');
 

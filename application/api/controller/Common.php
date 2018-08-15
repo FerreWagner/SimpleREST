@@ -22,14 +22,19 @@ class Common extends Controller
             'login' => [
                 'user_name' => ['require', 'chsDash', 'max' => 20],
                 'user_pwd'  => 'require|length:32',
-            ]
+            ],
+            'register' => [
+                'user_name' => 'require',
+                'user_pwd'  => 'require|length:32',
+                'code'      => 'require|number|length:6',
+            ],
         ],
         'Code' => [
             'getcode' => [
                 'username' => 'require',
                 'is_exist' => 'require|number|length:1',
             ]
-        ]
+        ],
     ];
     protected function _initialize()
     {
@@ -173,5 +178,29 @@ class Common extends Controller
                 break;
         }
     }
+
+    /**
+     * 检测验证码
+     * @param $user_name    用户名
+     * @param $code         验证码
+     */
+    public function checkCode($user_name, $code)
+    {
+        //验证码超时，1分钟内有效
+        $last_time = session($user_name.'_last_send_time');
+        
+        if (time() - $last_time > 60){
+            $this->returnMsg(400, '验证超时，请在1分钟内验证');
+        }
+
+        //检测验证码是否正确
+        $md5_code = md5($user_name.'_'.md5($code));
+        if (session($user_name.'_code') !== $md5_code){
+            $this->returnMsg(400, '验证码不正确');
+        }
+        //无论是否正确，每个验证码只验证一次
+        session($user_name.'_code', null);
+    }
+
 
 }

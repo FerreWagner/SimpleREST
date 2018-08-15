@@ -41,7 +41,7 @@ return [
     // 指定从服务器序号
     'slave_no'        => '',
     // 是否严格检查字段是否存在
-    'fields_strict'   => true,
+    'fields_strict'   => false, //关闭，否则表单中没有数据库中对应字段会产生error
     // 数据集返回类型
     'resultset_type'  => 'array',
     // 自动写入时间戳字段
