@@ -9,6 +9,7 @@
 namespace app\api\controller;
 
 use think\Controller;
+use think\Image;
 use think\Request;
 use think\Validate;
 
@@ -28,6 +29,10 @@ class Common extends Controller
                 'user_pwd'  => 'require|length:32',
                 'code'      => 'require|number|length:6',
             ],
+            'upload_head_img' => [
+                'user_id'    => 'require|number',
+                'user_icon'  => 'require|image|fileSize:2000000|fileExt:jpg,png,bmp,jpeg',
+            ],
         ],
         'Code' => [
             'getcode' => [
@@ -42,7 +47,8 @@ class Common extends Controller
         $this->request = Request::instance();
 //        $this->checkTime($this->request->only(['time']));
 //        $this->checkToken($this->request->param());
-        $this->params = $this->checkParams($this->request->except(['time', 'token']));
+//        $this->params = $this->checkParams($this->request->except(['time', 'token']));
+        $this->params = $this->checkParams($this->request->param(true));    //接收到包括file类型的参数
     }
 
     /**
@@ -200,6 +206,32 @@ class Common extends Controller
         }
         //无论是否正确，每个验证码只验证一次
         session($user_name.'_code', null);
+    }
+
+    public function uploadFile($file, $type = '')
+    {
+        $info = $file->move(ROOT_PATH.'public'.DS.'uploads');
+        if ($info){
+            $path = '/uploads/'.$info->getSaveName();
+            //裁剪图片
+            if (!empty($type)){
+                $this->imageEdit($path, $type);
+            }
+            return str_replace('\\', '/', $path);   //反斜线改为斜线
+        }else{
+            $this->returnMsg(400, $file->getError());
+        }
+    }
+
+    public function imageEdit($path, $type)
+    {
+        $image = Image::open(ROOT_PATH.'public'.$path);
+        switch ($type)
+        {
+            case 'head_img':
+                $image->thumb(200, 200, Image::THUMB_CENTER)->save(ROOT_PATH.'public'.$path);    //TP5生成图片的方法
+                break;
+        }
     }
 
 

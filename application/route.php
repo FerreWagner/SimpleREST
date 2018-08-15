@@ -37,4 +37,5 @@ Route::get('code/:time/:token/:username/:is_exist', 'code/getcode');
 Route::post('user/register', 'user/register');
 //用户登录
 Route::post('user/login', 'user/login');
-
+//用户上传头像
+Route::post('user/icon', 'user/upload_head_img');
