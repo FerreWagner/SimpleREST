@@ -56,3 +56,5 @@ Route::post('user/nickname', 'user/set_nickname');
 //article路由
 //新增文章
 Route::post('article', 'article/add_article');
+//查看文章列表
+Route::get('articles/:time/:token/:user_id/[:num]/[:page]', 'article/article_list');

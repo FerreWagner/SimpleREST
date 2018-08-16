@@ -74,11 +74,17 @@ class Common extends Controller
                 'article_uid' => 'require|number',
                 'article_title' => 'require|chsDash',
             ],
+            'article_list' => [
+                'user_id' => 'require|number',
+                'num' => 'number',
+                'page' => 'number',
+            ],
         ],
 
     ];
     protected function _initialize()
     {
+//        halt(\request()->param());
         parent::_initialize();
         $this->request = Request::instance();
 //        $this->checkTime($this->request->only(['time']));
