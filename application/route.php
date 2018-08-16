@@ -43,3 +43,10 @@ Route::post('user/icon', 'user/upload_head_img');
 Route::post('user/change_pwd', 'user/change_pwd');
 //用户找回密码
 Route::post('user/find_pwd', 'user/find_pwd');
+//用户绑定手机号
+//Route::post('user/bind_phone', 'user/bind_phone');
+//用户绑定邮箱
+//Route::post('user/bind_email', 'user/bind_email');
+//用户绑定电话/邮箱
+Route::post('user/bind_username', 'user/bind_username');
+

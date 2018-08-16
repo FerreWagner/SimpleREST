@@ -34,13 +34,28 @@ class Common extends Controller
                 'user_icon'  => 'require|image|fileSize:2000000|fileExt:jpg,png,bmp,jpeg',
             ],
             'change_pwd' => [
-                'user_name' => 'require',
+                'user_name'     => 'require',
                 'user_ini_pwd'  => 'require|length:32',
-                'user_pwd'  => 'require|length:32',
+                'user_pwd'      => 'require|length:32',
             ],
             'find_pwd' => [
                 'user_name' => 'require',
                 'user_pwd'  => 'require|length:32',
+                'code'      => 'require|number|length:6',
+            ],
+            'bind_phone' => [
+                'user_id'   => 'require|number',
+                'phone'     => ['require', 'regex' => '/^1[34578]\d{9}$/'],
+                'code'      => 'require|number|length:6',
+            ],
+            'bind_email' => [
+                'user_id'   => 'require|number',
+                'email'     => 'require|email',
+                'code'      => 'require|number|length:6',
+            ],
+            'bind_username' => [
+                'user_id'   => 'require|number',
+                'user_name' => 'require',
                 'code'      => 'require|number|length:6',
             ],
         ],
@@ -205,7 +220,7 @@ class Common extends Controller
         //验证码超时，1分钟内有效
         $last_time = session($user_name.'_last_send_time');
 
-        if (time() - $last_time > 60){
+        if (time() - $last_time > 6000){
             $this->returnMsg(400, '验证超时，请在1分钟内验证');
         }
 
