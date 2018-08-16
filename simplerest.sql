@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2018-08-10 17:52:47
+-- Generation Time: 2018-08-16 16:34:17
 -- 服务器版本： 10.1.28-MariaDB
 -- PHP Version: 7.1.11
 
@@ -25,28 +25,58 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `api_article`
+--
+
+CREATE TABLE `api_article` (
+  `article_id` int(11) NOT NULL,
+  `article_title` varchar(255) NOT NULL,
+  `article_uid` int(11) NOT NULL,
+  `article_content` text NOT NULL,
+  `article_ctime` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `api_article`
+--
+
+INSERT INTO `api_article` (`article_id`, `article_title`, `article_uid`, `article_content`, `article_ctime`) VALUES
+(1, 'ganshane', 3, '', 1534429950),
+(2, 'ganshane', 3, '', 1534429975);
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `api_user`
 --
 
 CREATE TABLE `api_user` (
   `user_id` int(11) NOT NULL,
   `user_phone` char(11) NOT NULL,
-  `user_name` varchar(255) NOT NULL,
+  `user_nickname` varchar(255) NOT NULL,
   `user_email` varchar(255) NOT NULL,
   `user_rtime` int(11) NOT NULL,
-  `user_pwd` char(32) NOT NULL
+  `user_pwd` char(32) NOT NULL,
+  `user_icon` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `api_user`
 --
 
-INSERT INTO `api_user` (`user_id`, `user_phone`, `user_name`, `user_email`, `user_rtime`, `user_pwd`) VALUES
-(1, '18467941643', 'Ferre', '4679895@qq.com', 2147483640, '11111111111111111111111111111111');
+INSERT INTO `api_user` (`user_id`, `user_phone`, `user_nickname`, `user_email`, `user_rtime`, `user_pwd`, `user_icon`) VALUES
+(1, '18408229271', 'Ferre', '4679895@qq.com', 2147483640, '11111111111111111111111111111111', ''),
+(3, '18408229270', '宝贝儿', '18408229270@163.com', 1534334458, '33333333333333333333333333333333', '/uploads/20180815/df9b9efc07e2dee9a99aa90751d2bb13.png');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `api_article`
+--
+ALTER TABLE `api_article`
+  ADD PRIMARY KEY (`article_id`);
 
 --
 -- Indexes for table `api_user`
@@ -59,10 +89,16 @@ ALTER TABLE `api_user`
 --
 
 --
+-- 使用表AUTO_INCREMENT `api_article`
+--
+ALTER TABLE `api_article`
+  MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- 使用表AUTO_INCREMENT `api_user`
 --
 ALTER TABLE `api_user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
