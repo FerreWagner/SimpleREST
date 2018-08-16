@@ -53,6 +53,25 @@ class Article extends Common
         }
     }
 
+    public function article_detail()
+    {
+        //接收参数
+        $data = $this->params;
+        //查库
+        $field = 'article_id, article_title, article_ctime, article_content, user_nickname';
+        $where['article_id'] = $data['article_id'];
+        $join = [['api_user u', 'u.user_id = a.article_uid']];
+        $res = db('article')->alias('a')->join($join)->field($field)->where($where)->find();
+        $res['article_content'] = htmlspecialchars_decode($res['article_content']); //在config里对前端攻击进行了转义，此处转回
+
+        //判定并输出
+        if (!$res){
+            $this->returnMsg(400 ,'查询失败');
+        }else{
+            $this->returnMsg(200, '查询成功', $res);
+        }
+    }
+
 
 
 }

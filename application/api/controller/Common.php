@@ -79,6 +79,9 @@ class Common extends Controller
                 'num' => 'number',
                 'page' => 'number',
             ],
+            'article_detail' => [
+                'article_id' => 'require|number',
+            ],
         ],
 
     ];
