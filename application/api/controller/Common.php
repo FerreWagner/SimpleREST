@@ -33,6 +33,11 @@ class Common extends Controller
                 'user_id'    => 'require|number',
                 'user_icon'  => 'require|image|fileSize:2000000|fileExt:jpg,png,bmp,jpeg',
             ],
+            'change_pwd' => [
+                'user_name' => 'require',
+                'user_ini_pwd'  => 'require|length:32',
+                'user_pwd'  => 'require|length:32',
+            ],
         ],
         'Code' => [
             'getcode' => [

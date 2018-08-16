@@ -39,3 +39,5 @@ Route::post('user/register', 'user/register');
 Route::post('user/login', 'user/login');
 //用户上传头像
 Route::post('user/icon', 'user/upload_head_img');
+//用户修改密码
+Route::post('user/change_pwd', 'user/change_pwd');

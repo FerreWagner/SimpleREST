@@ -92,6 +92,38 @@ class User extends Common
         }
     }
 
+    public function change_pwd()
+    {
+        //接收参数
+        $data = $this->params;
+        //检测用户名并取出数据库中的密码
+        $user_name_type = $this->checkUsername($data['user_name']);
+        switch ($user_name_type)
+        {
+            case 'phone':
+                $this->checkExist($data['user_name'], 'phone', 1);
+                $where['user_phone'] = $data['user_name'];
+                break;
+            case 'email':
+                $this->checkExist($data['user_name'], 'email', 1);
+                $where['user_email'] = $data['user_name'];
+                break;
+        }
+
+        //判断原始密码是否正确
+        $db_ini_pwd = db('user')->where($where)->value('user_pwd');
+        if ($db_ini_pwd !== $data['user_ini_pwd']){
+            $this->returnMsg(400, '原密码错误');
+        }
+        //新密码入库
+        $res = db('user')->where($where)->setField('user_pwd', $data['user_pwd']);
+        if ($res !== false){
+            $this->returnMsg(200, '密码修改成功');
+        }else{
+            $this->returnMsg(400, '密码修改失败');
+        }
+    }
+
 
 
 }
