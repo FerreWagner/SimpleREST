@@ -35,6 +35,7 @@ class Article extends Common
 
         //查库
         $where['article_uid'] = $data['user_id'];
+        $where['article_isdel'] = 0;
         $count = db('article')->where($where)->count();
         $page_num = ceil($count/$data['num']);
         $field = 'article_id, article_ctime, article_title, user_nickname';
@@ -89,15 +90,17 @@ class Article extends Common
     {
         //接收参数
         $data = $this->params;
-        $res = db('article')->delete($data['article_id']);
+        //逻辑删除
+        $res = db('article')->where('article_id', $data['article_id'])->setField('article_isdel', 1);
         //物理删除
+//        $res = db('article')->delete($data['article_id']);
         if ($res){
             $this->returnMsg(200, '删除文章成功');
         }else{
             $this->returnMsg(400, '删除文章失败');
         }
-        //逻辑删除
-        
+
+
     }
 
 
