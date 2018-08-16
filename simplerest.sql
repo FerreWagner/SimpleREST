@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2018-08-16 16:34:17
+-- Generation Time: 2018-08-16 18:03:11
 -- 服务器版本： 10.1.28-MariaDB
 -- PHP Version: 7.1.11
 
@@ -33,16 +33,17 @@ CREATE TABLE `api_article` (
   `article_title` varchar(255) NOT NULL,
   `article_uid` int(11) NOT NULL,
   `article_content` text NOT NULL,
-  `article_ctime` int(11) NOT NULL
+  `article_ctime` int(11) NOT NULL,
+  `article_isdel` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `api_article`
 --
 
-INSERT INTO `api_article` (`article_id`, `article_title`, `article_uid`, `article_content`, `article_ctime`) VALUES
-(1, 'ganshane', 3, '', 1534429950),
-(2, 'ganshane', 3, '', 1534429975);
+INSERT INTO `api_article` (`article_id`, `article_title`, `article_uid`, `article_content`, `article_ctime`, `article_isdel`) VALUES
+(1, 'ganshane', 3, '', 1534429950, 0),
+(2, 'shit1', 3, '', 1534429975, 1);
 
 -- --------------------------------------------------------
 
@@ -92,7 +93,7 @@ ALTER TABLE `api_user`
 -- 使用表AUTO_INCREMENT `api_article`
 --
 ALTER TABLE `api_article`
-  MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- 使用表AUTO_INCREMENT `api_user`
