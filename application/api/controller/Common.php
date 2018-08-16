@@ -67,8 +67,15 @@ class Common extends Controller
             'getcode' => [
                 'username' => 'require',
                 'is_exist' => 'require|number|length:1',
-            ]
+            ],
         ],
+        'Article' => [
+            'add_article' => [
+                'article_uid' => 'require|number',
+                'article_title' => 'require|chsDash',
+            ],
+        ],
+
     ];
     protected function _initialize()
     {

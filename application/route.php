@@ -51,3 +51,8 @@ Route::post('user/find_pwd', 'user/find_pwd');
 Route::post('user/bind_username', 'user/bind_username');
 //用户修改昵称
 Route::post('user/nickname', 'user/set_nickname');
+
+
+//article路由
+//新增文章
+Route::post('article', 'article/add_article');
