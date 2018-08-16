@@ -41,3 +41,5 @@ Route::post('user/login', 'user/login');
 Route::post('user/icon', 'user/upload_head_img');
 //用户修改密码
 Route::post('user/change_pwd', 'user/change_pwd');
+//用户找回密码
+Route::post('user/find_pwd', 'user/find_pwd');
