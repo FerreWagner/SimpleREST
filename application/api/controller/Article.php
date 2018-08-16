@@ -85,6 +85,21 @@ class Article extends Common
         }
     }
 
+    public function del_article()
+    {
+        //接收参数
+        $data = $this->params;
+        $res = db('article')->delete($data['article_id']);
+        //物理删除
+        if ($res){
+            $this->returnMsg(200, '删除文章成功');
+        }else{
+            $this->returnMsg(400, '删除文章失败');
+        }
+        //逻辑删除
+        
+    }
+
 
 
 }
