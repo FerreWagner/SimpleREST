@@ -49,4 +49,5 @@ Route::post('user/find_pwd', 'user/find_pwd');
 //Route::post('user/bind_email', 'user/bind_email');
 //用户绑定电话/邮箱
 Route::post('user/bind_username', 'user/bind_username');
-
+//用户修改昵称
+Route::post('user/nickname', 'user/set_nickname');

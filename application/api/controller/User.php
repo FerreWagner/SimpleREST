@@ -209,6 +209,22 @@ class User extends Common
         }
     }
 
+    public function set_nickname()
+    {
+        //接收参数
+        $data = $this->params;
+        //检测名称
+        $res = db('user')->where('user_nickname', $data['user_nickname'])->find();
+        if ($res) $this->returnMsg(400, '该昵称已被占用');
+        //入库
+        $res = db('user')->where('user_id', $data['user_id'])->setField('user_nickname', $data['user_nickname']);
+        if (!$res){
+            $this->returnMsg(400, '修改昵称失败');
+        }else{
+            $this->returnMsg(200, '修改昵称成功');
+        }
+    }
+
 
 
 }

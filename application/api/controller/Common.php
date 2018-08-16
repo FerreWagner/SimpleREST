@@ -53,6 +53,10 @@ class Common extends Controller
                 'email'     => 'require|email',
                 'code'      => 'require|number|length:6',
             ],
+            'set_nickname' => [
+                'user_id'   => 'require|number',
+                'user_nickname'      => 'require|chsDash',
+            ],
             'bind_username' => [
                 'user_id'   => 'require|number',
                 'user_name' => 'require',
