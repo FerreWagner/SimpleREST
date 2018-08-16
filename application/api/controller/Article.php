@@ -72,6 +72,19 @@ class Article extends Common
         }
     }
 
+    public function update_article()
+    {
+        //接收参数
+        $data = $this->params;
+        //入库
+        $res = db('article')->where('article_id', $data['article_id'])->update($data);
+        if ($res !== false){
+            $this->returnMsg(200, '修改文章成功');
+        }else{
+            $this->returnMsg(400, '修改文章失败');
+        }
+    }
+
 
 
 }

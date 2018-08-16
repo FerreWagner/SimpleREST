@@ -82,6 +82,10 @@ class Common extends Controller
             'article_detail' => [
                 'article_id' => 'require|number',
             ],
+            'update_article' => [
+                'article_id' => 'require|number',
+                'article_title' => 'chsDash',
+            ],
         ],
 
     ];

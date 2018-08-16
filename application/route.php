@@ -60,4 +60,6 @@ Route::post('article', 'article/add_article');
 Route::get('articles/:time/:token/:user_id/[:num]/[:page]', 'article/article_list');
 //获取单条文章信息
 Route::get('article/:time/:token/:article_id', 'article/article_detail');
+//修改/更新文章
+Route::put('article', 'article/update_article');
 
